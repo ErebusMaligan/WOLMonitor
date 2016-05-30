@@ -1,0 +1,12 @@
+<project name="WakeOnLAN" basedir=".">
+	<property name="CommonBuild" value="../ant/common.ant"/> 
+	<property name="this.project" value="${ant.project.name}" />
+	<property name="main-class"		value="app.WOLMonitor" />
+	<ant target="jar" antfile="${CommonBuild}" inheritAll="true"/> 
+	<ant target="deployed" antfile="${CommonBuild}" inheritAll="true"/> 
+		
+	<!-- deployment -->
+	<copy todir="../deployed/Tools/Apps/bat">
+		<fileset file="./WoL.ico"/>
+	</copy>
+</project>
