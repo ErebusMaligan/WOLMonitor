@@ -1,0 +1,18 @@
+apply plugin: 'java'
+
+dependencies {
+	compile fileTree( dir: "../libs", include: ['JUtils.jar', 'TerminalWindow.jar'] )
+}
+
+ext {
+	jarName = "WakeOnLAN"
+	copyLibs = true
+	deployedLibDir = "Apps/run"
+	libDest = "deployed/Tools/libs"
+	jarPathPrefix = "../../libs/"
+	
+	mainClass = "app.WOLMonitor"
+	iconFile = 'WoL.ico'
+}
+
+apply from: '../gradle/utilapp.gradle'
