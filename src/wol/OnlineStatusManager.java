@@ -2,12 +2,12 @@ package wol;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
+import app.state.AppState;
+import listeners.BasicObservable;
+import listeners.BasicObserver;
 import scan.genericprocess.GenericProcess;
 import scan.net.PingAliveProcess;
-import app.state.AppState;
 
 /**
  * @author Daniel J. Rivers
@@ -15,7 +15,7 @@ import app.state.AppState;
  *
  * Created: Jan 9, 2016, 12:18:18 AM 
  */
-public class OnlineStatusManager extends Observable implements Observer {
+public class OnlineStatusManager extends BasicObservable implements BasicObserver {
 	
 	private Map<Destination, Boolean> status = new HashMap<>();
 
@@ -54,17 +54,15 @@ public class OnlineStatusManager extends Observable implements Observer {
 	
 	public void setStatus( Destination d, Boolean b ) {
 		status.put( d, b );
-		setChanged();
 		try {
 			notifyObservers( d );
-			clearChanged();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
 	
 	@Override
-	public void update( Observable o, Object arg ) {
+	public void update( BasicObservable o, Object arg ) {
 		if ( o instanceof GenericProcess ) {
 			( (GenericProcess)o ).closeResources();
 		}

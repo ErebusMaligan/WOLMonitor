@@ -3,12 +3,12 @@ package scan.genericprocess;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
+import app.AC;
+import listeners.BasicObservable;
 import process.ProcessManager;
 import process.TerminalProcess;
 import process.io.ProcessStreamSiphon;
-import app.AC;
 
 /**
  * @author Daniel J. Rivers
@@ -16,7 +16,7 @@ import app.AC;
  *
  * Created: Jan 5, 2016, 1:36:23 AM 
  */
-public abstract class GenericProcess extends Observable implements ProcessStreamSiphon {
+public abstract class GenericProcess extends BasicObservable implements ProcessStreamSiphon {
 
 	protected String name;
 
@@ -81,10 +81,8 @@ public abstract class GenericProcess extends Observable implements ProcessStream
 	}
 
 	public void onComplete() {
-		setChanged();
 		try {
 			notifyObservers( skimmed );
-			clearChanged();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}

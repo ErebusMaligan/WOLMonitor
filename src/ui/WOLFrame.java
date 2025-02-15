@@ -1,8 +1,5 @@
 package ui;
 
-import gui.dialog.BusyDialog;
-import gui.progress.DigitalJProgressBar;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
@@ -10,8 +7,6 @@ import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -22,13 +17,17 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
+import app.state.AppState;
+import gui.dialog.BusyDialog;
+import gui.progress.DigitalJProgressBar;
+import listeners.BasicObservable;
+import listeners.BasicObserver;
 import statics.GU;
 import statics.UIUtils;
 import ui.destination.DynamicDestinationDialog;
 import ui.destination.EditDestinationDialog;
 import wol.Destination;
 import wol.WOLUtils;
-import app.state.AppState;
 
 /**
  * @author Daniel J. Rivers
@@ -36,7 +35,7 @@ import app.state.AppState;
  *
  * Created: Jan 6, 2016, 1:37:48 AM 
  */
-public class WOLFrame extends JFrame implements Observer {
+public class WOLFrame extends JFrame implements BasicObserver {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -131,7 +130,7 @@ public class WOLFrame extends JFrame implements Observer {
 	}
 
 	@Override
-	public void update( Observable o, Object arg ) {
+	public void update( BasicObservable o, Object arg ) {
 		if ( o.equals( as.getDestinationManager() ) ) {
 			if ( arg != null ) {
 				if ( arg instanceof Destination ) {

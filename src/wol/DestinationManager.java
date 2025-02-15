@@ -5,19 +5,19 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 
+import app.AC;
+import app.xml.WOLDestinationDocumentHandler;
+import app.xml.XC;
+import listeners.BasicObservable;
+import listeners.BasicObserver;
 import scan.net.ARPProcess;
 import scan.net.NetViewProcess;
 import scan.net.PingAddressProcess;
 import xml.XMLExpansion;
 import xml.XMLValues;
-import app.AC;
-import app.xml.WOLDestinationDocumentHandler;
-import app.xml.XC;
 
 /**
  * @author Daniel J. Rivers
@@ -25,7 +25,7 @@ import app.xml.XC;
  *
  * Created: Dec 20, 2015, 12:50:50 PM 
  */
-public class DestinationManager extends Observable implements Observer, XMLValues {
+public class DestinationManager extends BasicObservable implements BasicObserver, XMLValues {
 
 	private List<Destination> destinations = new ArrayList<>();
 	
@@ -69,10 +69,8 @@ public class DestinationManager extends Observable implements Observer, XMLValue
 		ping.closeResources();
 		arp.closeResources();
 		refreshCDL.countDown();
-		setChanged();
 		try {
 			notifyObservers( null );
-			clearChanged();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -84,10 +82,8 @@ public class DestinationManager extends Observable implements Observer, XMLValue
 	
 	public void removeDynamicDestination( Destination d ) {
 		dynamic.remove( d );
-		setChanged();
 		try {
 			notifyObservers( d );
-			clearChanged();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -95,10 +91,8 @@ public class DestinationManager extends Observable implements Observer, XMLValue
 	
 	public synchronized void removeDestination( Destination d ) {
 		destinations.remove( d );
-		setChanged();
 		try {
 			notifyObservers( d );
-			clearChanged();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -107,10 +101,8 @@ public class DestinationManager extends Observable implements Observer, XMLValue
 	
 	public synchronized void addDestination( Destination d ) {
 		destinations.add( d );
-		setChanged();
 		try {
 			notifyObservers( d );
-			clearChanged();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -146,7 +138,7 @@ public class DestinationManager extends Observable implements Observer, XMLValue
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void update( Observable o, Object arg ) {
+	public void update( BasicObservable o, Object arg ) {
 		if ( o.equals( net ) ) {
 			ping.execute( arg );
 		} else if ( o.equals( ping ) ) {
